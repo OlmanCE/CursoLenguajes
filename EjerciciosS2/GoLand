@@ -1,0 +1,72 @@
+package main
+
+import "fmt"
+
+/*
+1)	Haga un programa que cuente e indique el número de caracteres, el número de palabras y
+el número de líneas de un texto cualquiera (obtenido de cualquier forma que considere).
+Considere hacer el cálculo de las tres variables en el mismo proceso.
+*/
+func ejercicio1() {
+
+	var a = "Hola que tal"
+	fmt.Println(a)
+
+	f := "Segundo saludo de prueba"
+	fmt.Println(f)
+
+	s := make([]string, len(f)) //Se hace uso de un slice
+	var carac int
+	for i := 0; i < len(f); i++ { //Introduce el texto en un slice
+		if string(f[i]) != " " { //valida que no sea un espacio
+			s[i] = string(f[i]) //se agrega al slice
+			carac++             //variable que cuenta los caracteres
+		}
+	}
+
+	var cantPalabras int          //conteo de palabras
+	for i := 0; i < len(f); i++ { //se recorre el slice
+		if string(f[i]) == " " { //existe un espacio entre palabras, cada espacio es una palabra
+			cantPalabras++
+		}
+	}
+	fmt.Printf("La cantidad de caracteres del texto es: %d", carac)
+	fmt.Printf("La cantidad de palabras del texto es: %d", cantPalabras)
+}
+
+/*
+2)	Escriba el programa más eficiente que pueda para imprimir en pantalla la siguiente figura(rombo):
+	Para dicho fin, escriba y use una función que reciba de parámetro la cantidad de elementos
+	de la línea del centro, la cual debe ser impar positiva.
+*/
+func imprimirFigura(n int) {
+	var caracter = '*'
+	if n%2 == 0 {
+		n++ // en caso de que el numero(parametro) sea par lo incrementa para que sea impar
+	}
+
+	for i := 1; i <= n; i += 2 { //se incrementa de 2 en 2 para imprimir numeros impares
+		for j := n; j > i; j -= 2 { //imprime los espacios en blanco
+			fmt.Print(" ")
+		}
+		for j := 1; j <= i; j++ { //imprime el caracter
+			fmt.Printf("%c", caracter)
+		}
+		fmt.Println()
+	}
+	//se invierte la logica para imprimir los caracteres inferiores (despues de la linea del centro)
+	for i := n - 2; i >= 1; i -= 2 {
+		for j := n; j > i; j -= 2 {
+			fmt.Print(" ")
+		}
+		for j := 1; j <= i; j++ {
+			fmt.Printf("%c", caracter)
+		}
+		fmt.Println()
+	}
+}
+
+func main() {
+	//ejercicio1()
+	//imprimirFigura(5)
+}
