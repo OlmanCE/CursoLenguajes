@@ -12,32 +12,28 @@ func ejercicio1() {
 	var a = "Hola que tal"
 	fmt.Println(a)
 
-	f := "Segundo saludo de prueba"
+	f := "Segundo saludo de prueba txt fmt"
 	fmt.Println(f)
 
-	s := make([]string, len(f)) //Se hace uso de un slice
-	var carac int
-	for i := 0; i < len(f); i++ { //Introduce el texto en un slice
-		if string(f[i]) != " " { //valida que no sea un espacio
-			s[i] = string(f[i]) //se agrega al slice
-			carac++             //variable que cuenta los caracteres
-		}
-	}
+	var cantPalabras = 1 //conteo de palabras
+	var cantCaracteres int
 
-	var cantPalabras int          //conteo de palabras
 	for i := 0; i < len(f); i++ { //se recorre el slice
 		if string(f[i]) == " " { //existe un espacio entre palabras, cada espacio es una palabra
 			cantPalabras++
 		}
 	}
-	fmt.Printf("La cantidad de caracteres del texto es: %d", carac)
-	fmt.Printf("La cantidad de palabras del texto es: %d", cantPalabras)
+	cantCaracteres = len(f) - cantPalabras // cantidad de caracteres del texto
+
+	fmt.Println(len(f))
+	fmt.Println("La cantidad de caracteres del texto es: ", cantCaracteres+1)
+	fmt.Println("La cantidad de palabras del texto es: ", cantPalabras)
 }
 
 /*
-2)	Escriba el programa más eficiente que pueda para imprimir en pantalla la siguiente figura(rombo):
-	Para dicho fin, escriba y use una función que reciba de parámetro la cantidad de elementos
-	de la línea del centro, la cual debe ser impar positiva.
+ 2. Escriba el programa más eficiente que pueda para imprimir en pantalla la siguiente figura(rombo):
+    Para dicho fin, escriba y use una función que reciba de parámetro la cantidad de elementos
+    de la línea del centro, la cual debe ser impar positiva.
 */
 func imprimirFigura(n int) {
 	var caracter = '*'
@@ -67,6 +63,6 @@ func imprimirFigura(n int) {
 }
 
 func main() {
-	//ejercicio1()
+	ejercicio1()
 	//imprimirFigura(5)
 }
