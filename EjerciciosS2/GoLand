@@ -62,7 +62,69 @@ func imprimirFigura(n int) {
 	}
 }
 
+
+/*Escriba una función que permita rotar una secuencia de elementos N posiciones a la izquierda o a la derecha según sea el caso en función al parámetro que se reciba. 
+Los parámetros deben ser un puntero a un arreglo previamente creado, la cantidad de movimiento de rotación y la dirección (0 = izq y 1 = der).   
+*/
+
+//Se empleo una estructura con el fin de practica
+//En la logica empleada no se necesito dos direcciones 
+type caracteres struct {
+	caracter string
+}
+type arrayCaracteres []caracteres
+
+var CArray arrayCaracteres //Array de caracteres
+
+
+//Funcion que añade caracteres al array
+func (l *arrayCaracteres) AddArray(carac string) {
+	CArray = append(CArray, caracteres{caracter: carac})
+}
+
+//Funcion que se encarga de hacer la rotacion
+func rotacion(l *arrayCaracteres, Crotacion int, direccion int) {
+	if Crotacion > len(*l) {// Rotacion mas grande que la cantidad de elementos  en el array
+		fmt.Println("La cantidad de rotacion no es compatible")
+	}
+	s := make([]string, 0)
+	s2 := make([]string, 0)
+	for i := 0; i < len(*l); i++ {//Se encarga de pasar el array de estructuras al splice
+		s = append(s, (*l)[i].caracter)
+		fmt.Println("Entro ", (*l)[i])
+	}
+	//logica de rotacion
+	if direccion == 0 {
+		var l = s[:Crotacion]// llena desde el indice 0 hasta el indice de la cantidad de rotacion
+		var l2 = s[Crotacion:]// llena desde el indice de rotacion en adelante
+		s2 = append(s2, l2...)// se agrega primero la segunda parte de la particion del slice
+		s2 = append(s2, l...)//posteriormente se agrega la primera particion pasando a ser la ultima
+	}
+
+	fmt.Println(s2)
+	fmt.Println(len(s))
+
+}
+
+
 func main() {
 	ejercicio1()
 	//imprimirFigura(5)
+	
+	
+	
+	Llenado del array de caracteres
+	char1 := caracteres{"a"}
+	char2 := caracteres{"z"}
+	char3 := caracteres{"p"}
+	char4 := caracteres{"j"}
+
+	CArray = append(CArray, char1)
+	CArray = append(CArray, char2)
+	CArray = append(CArray, char3)
+	CArray = append(CArray, char4)
+	//fmt.Println(CArray)
+
+	rotacion(&CArray, 2, 0)
+
 }
