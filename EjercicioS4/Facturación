@@ -1,0 +1,141 @@
+package main
+
+import (
+	"fmt"
+	"golang.org/x/exp/slices"
+)
+
+type producto struct {
+	nombre      string
+	descripcion string
+	montoVenta  int32
+}
+
+type persona struct {
+	nombre string
+	edad   int
+}
+
+type Productos []producto
+
+var factura Productos
+
+type Personas []persona
+
+var person Personas
+
+const rangoPagoImpuestos = 20000
+const porcentajeImpuesto = 0.13
+
+func (f *Productos) agregarProducto(nom string, desc string, pre int32) {
+	idx := slices.IndexFunc(*f, func(p producto) bool { return p.nombre == nom })
+	if idx == -1 {
+		*f = append(*f, producto{nom, desc, pre})
+	} else {
+		fmt.Println("cant add existing product to the list")
+	}
+}
+
+func (f *Productos) calcularImpuestoFactura() int32 {
+	lista := filter1(*f, func(p producto) bool {
+		return p.montoVenta > rangoPagoImpuestos
+	})
+	lista2 := map1(lista, func(p producto) int32 {
+		return int32(float64(p.montoVenta) * porcentajeImpuesto)
+	})
+	return reduce(lista2)
+}
+
+func (f *Productos) calcularMontoFactura() int32 {
+	lista := map1(*f, func(p producto) int32 {
+		return p.montoVenta
+	})
+	return reduce(lista)
+}
+func (f *Productos) calcularMontoFactura2() int32 {
+	lista := map1(*f, func(p producto) int32 {
+		return p.montoVenta
+	})
+	return reduce(lista)
+}
+
+// funciones map y filter para aplicaciones específicas
+func map1(list Productos, f func(producto) int32) []int32 {
+	mapped := make([]int32, len(list))
+
+	for i, e := range list {
+		mapped[i] = f(e)
+	}
+	return mapped
+}
+
+// Solo funciona con Slice
+func map2[P1, P2 any](list []P1, f func(P1) P2) []P2 { //Funcion map Global
+	mapped := make([]P2, 0)
+
+	for i, e := range list {
+		mapped[i] = f(e)
+	}
+	return mapped
+}
+
+func filter2[P1 any](list []P1, f func(P1) bool) []P1 { //Filter Global
+	filtered := make([]P1, 0)
+
+	for _, element := range list {
+		if f(element) {
+			filtered = append(filtered, element)
+		}
+	}
+	return filtered
+}
+
+func filter1(list Productos, f func(producto) bool) Productos {
+	filtered := make(Productos, 0)
+	for _, element := range list {
+		if f(element) {
+			filtered = append(filtered, element)
+		}
+	}
+	return filtered
+}
+
+func reduce(list []int32) int32 {
+	var result int32 = 0
+	for _, v := range list {
+		result += v
+	}
+	return result
+}
+
+// Construir la versión con tipos genéricos de las tres funciones anteriores map/filter para que acepten slices y funciones de cualquier otro tipo
+// AYUDA SOBRE TIPOS GENERICOS: https://gobyexample.com/generics
+
+func main() {
+	factura.agregarProducto("tarjeta madre", "Asus", 54200)
+	factura.agregarProducto("mouse", "alámbrico", 15000)
+	factura.agregarProducto("teclado", "gamer con luces", 30000)
+	factura.agregarProducto("memoria ssd", "2 gb", 65000)
+	factura.agregarProducto("cable video", "display port 1m", 18000)
+
+	person = append(person, persona{"Juan", 15})
+	person = append(person, persona{"Ana", 17})
+	person = append(person, persona{"Jimenez", 19})
+	person = append(person, persona{"Steven", 18})
+
+
+
+  //Ejercicio repo Probar su funcionamiento creando una lista/slice de personas y filtrando aquellas personas que sean mayores de edad
+	lista1 := filter2(person, func(per persona) bool {
+		return per.edad >= 18
+	})
+
+	fmt.Println("Filtrando personas con edad >= 18....")
+	fmt.Println(lista1)
+
+	fmt.Println("Calculando monto de factura...")
+	println(factura.calcularMontoFactura())
+	fmt.Println("Factura con impuesto incluido...")
+	println(factura.calcularImpuestoFactura())
+
+}
