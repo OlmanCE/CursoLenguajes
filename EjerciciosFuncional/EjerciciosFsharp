@@ -1,0 +1,76 @@
+ // For more information see https://aka.ms/fsharp-console-apps
+ // 1. Haciendo uso de la función filter, implemente una función que a partir de una lista de cadenas representando frases de parámetro,
+ // filtre aquellas que contengan una palabra que el usuario indique en otro argumento (palabra completa contenida). Ej
+ // sub_cadenas “la” [“la casa; “el perro”; “pintando la cerca”]
+ // [“la casa, “pintando la cerca”]
+let filtar_por_palabra (palabra:string) (lista:string list) =
+        lista
+        |> List.filter (fun str -> str.Contains(palabra))
+let frases = ["la casa"; "el perro"; "pintando la cerca"] 
+printfn "%A" (filtar_por_palabra "la" frases)
+//----------------------------------------------------------------------------------------------------------------------
+(*
+1)	Construya una función que se llame general-sec A B. Esta función genera una secuencia de números en una
+    lista de A hasta B, donde  A y B son números enteros. Por ejemplo: generar-sec 0 5
+    [0; 1; 2; 3; 4; 5]
+*)
+let general_sec (a:int) (b:int)=
+         [a..b]
+printfn "Imprimiendo secuencia...%A" (general_sec 0 6)
+
+// Otra función que hace lo mismo
+let general_sec_two (a:int) (b:int)=
+    let lista  = [] 
+    lista
+    |> List.append [a..b] 
+                             
+printfn "Imprimiendo secuencia...%A" (general_sec_two 3 6)
+//----------------------------------------------------------------------------------------------------------------------
+(*
+3)	Migrar el ejercicio realizado en Go sobre facturas con listas de productos haciendo énfasis en la implementación
+de las funciones para calcular el monto a pagar por la factura completa y el monto a pagar por concepto del 13%
+de impuesto de venta para aquellos productos que deban pagarlo según criterio de selección.
+*)
+ 
+type producto = struct//structura producto
+     val nombre:string 
+     val descripcion:string
+     val montoVenta:int32
+     
+     new (nombre, descripcion, montoVenta) = // Constructor  
+      {nombre = nombre; descripcion = descripcion; montoVenta = montoVenta;}  
+end
+//lista de productos
+let producto_list : producto list = 
+    [producto("Product A", "Asus", 26000);producto("mouse", "inalambrico", 25000); producto("teclado", "gamerled", 15000);
+     producto("memoria ssd", "2 gb", 65000); producto("headset", "Redragon", 70000)  ]
+
+//-------------------------------------
+//imprime lista de productos
+producto_list
+|> List.iter (fun p ->
+    printfn "%s - %s - %d..." p.nombre p.descripcion p.montoVenta)
+//-------------------------------------
+//mapea precio de productos
+let saveMonto = producto_list |> List.map (fun x -> (x.montoVenta))
+printfn "%A... " saveMonto
+//-------------------------------------
+// suma resultado de mapeo, precio de productos
+let calculandoMonto = List.reduce (+) saveMonto
+printfn "Monto total de la compra %A " calculandoMonto
+let Rangoimpuesto = 20000//constante de rango precio a aplicar impuesto 
+let porcentajeImpuesto = 0.13// constante de impuesto
+
+//-------------------------------------
+// mapea productos cuyo precio está en el rango
+let filterRango =  producto_list |> List.filter (fun x -> (x.montoVenta) > Rangoimpuesto)
+
+//-------------------------------------
+// filtra con impuesto incluido
+let lista2 = filterRango |> List.map (fun x -> float(x.montoVenta) * porcentajeImpuesto )
+printfn "Imprimiendo lista de precios con impuesto incluido %A..." lista2
+
+//-------------------------------------
+// reduce productos del filter (lista2)
+let totalImpuesto = List.reduce (+) lista2
+printfn "Imprimiendo total a pagar con impuesto incluido %A..." totalImpuesto
