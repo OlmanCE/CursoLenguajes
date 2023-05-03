@@ -1,0 +1,16 @@
+%ejercicio 1
+sub_conjunto([], _).
+sub_conjunto([X|Xs], Ys):-
+    member(X,Ys),
+    sub_cojunto(Xs,Ys).
+
+
+%ejercicio 2
+
+sub_cadenas(_,[],[]).
+sub_cadenas(Subca,[Cadena|Resto],[Cadena|Filtradas]):-
+    sub_atom(Cadena,_,_,_,Subca).
+    sub_cadenas(Subca, Resto, Filtradas).
+sub_cadenas(Subca, [_|Resto], Filtradas):-
+    sub_cadenas(Subca,Resto,Filtradas).
+
